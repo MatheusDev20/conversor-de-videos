@@ -1,7 +1,13 @@
 import multer from 'multer';
 import path from 'path';
 
-const videosPath = path.resolve(__dirname, '..', '..' ,'videos')
+const videosPath = path.resolve(__dirname, '..' ,'videos')
 console.log(videosPath)
+const storage = multer.diskStorage({
+  destination: videosPath,
+  filename: (req, file, cb) => {
+    cb(null, "video-" + Date.now() + path.extname(file.originalname))
+  }
+})
 
-export default videosPath
+export default storage

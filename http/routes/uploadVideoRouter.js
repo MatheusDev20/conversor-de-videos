@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import multer from 'multer';
 import videosPath from '../../config/multer';
-const uploadVideoRoute = Router()
+import VideoConverter from '../controllers/videoConverter';
+import storage from '../../config/multer';
+
+const uploadVideoRoute = Router();
+const videoConverter = new VideoConverter();
 const upload = multer({
-  dest: './videos'
-  }
-  )
-uploadVideoRoute.post('/video-upload', upload.single('video') , (req, res) => {
-  console.log(req.file)
-  console.log(videosPath)
-  console.log(__dirname)
-  return res.send('Ok')
-});
+  storage: storage
+}
+).single('video')
+
+uploadVideoRoute.post('/video-upload', upload, videoConverter.execute)
 
 
 export default uploadVideoRoute;
