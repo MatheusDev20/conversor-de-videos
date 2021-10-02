@@ -1,12 +1,12 @@
 import multer from 'multer';
 import path from 'path';
 
-const videosPath = path.resolve(__dirname, '..' ,'videos')
+const videosPath = path.resolve(__dirname, '..' ,'inputs')
 console.log(videosPath)
 const storage = multer.diskStorage({
   destination: videosPath,
   filename: (req, file, cb) => {
-    cb(null, "video-" + Date.now() + path.extname(file.originalname))
+    cb(null, "input-" + Date.now() + path.extname(file.originalname))
   }
 })
 

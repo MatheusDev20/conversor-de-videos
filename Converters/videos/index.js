@@ -5,6 +5,7 @@ import path from 'path';
 class VideoConverter {
   constructor(video_data) {
     this.path = video_data.path
+    this.originalFileName = video_data.originalname
     this.command = ffmpeg(video_data.path)
   }
 
@@ -16,15 +17,14 @@ class VideoConverter {
           return
         })
         .on('end', () => {
-          console.log('end being called he shouldnt')
           let res = {
+            "data": {},
             "status": 200,
             "message": "Succesfully converted",
-            "path": path.resolve(__dirname, '..', '..', `${output}`)
           }
           resolve(res)
         })
-        .save(path.resolve(__dirname, '..', '..', `${output}` + '/output.avi'))
+        .save(path.resolve(__dirname, '..', '..', `outputs/${output}/converted-video.${output}`))
     })
     return promise
   }
