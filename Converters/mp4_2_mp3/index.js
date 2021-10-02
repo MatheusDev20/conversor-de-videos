@@ -5,21 +5,11 @@ class MP4Converter {
     this.path = video_path
   }
     async convert() {
-      try {
-        let process = new FFmpeg(this.path).getInstance()
-        process.then((video) =>  {
-          console.log(video.metadata)
-          let metadata = video.metadata
-          return metadata
-          
-        },(err) => {
-          console.log('Error: ' + err);
-        });
-      } catch (e) {
-        console.log(e.code);
-        console.log(e.msg);
-      }
+      let process = new FFmpeg(this.path).getInstance()
+      return process
     }
+  
 }
+
 
 export default MP4Converter

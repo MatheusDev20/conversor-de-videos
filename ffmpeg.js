@@ -1,12 +1,6 @@
-import ffmpeg from 'ffmpeg';
+import ffmpeg from  'fluent-ffmpeg'
+const command = ffmpeg()
 
-export default class FFmpeg {
-  constructor(
-    video_path
-) {
-  this.video_path = video_path
-}
-getInstance() {
-  return new ffmpeg(this.video_path)
-}
-}
+
+
+export default command

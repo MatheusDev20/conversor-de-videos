@@ -1,19 +1,28 @@
-import MP4Converter from "../../Converters/mp4_2_mp3"
-import FFmpeg from "../../ffmpeg"
+
+import ffmpeg from 'fluent-ffmpeg'
 
 class VideoConverter {
   async execute(req, res) {
-      try {
-        const mp4_2_mp3 = new MP4Converter(req.file.path)
-        let video = await mp4_2_mp3.convert()
-        console.log(video)
-        return res.send(video)
-      }
-      catch (err) {
-        res.json({ err: err })
-      }
-
+    try {
+      console.log(req.query)
+      const { to } = req.query
+      console.log(to)
+      const command = ffmpeg(req.file.path)
+      command.withOutputFormat(to)
+        .on("end", () => {
+          console.log('Finished')
+        })
+        .on('error', (err) => {
+          console.log(err)
+        })
+        .saveToFile(__dirname + 'output.avi')
+      return res.send('ok')
     }
+    catch (err) {
+      res.json({ err: err })
+    }
+
+  }
 }
 
 export default VideoConverter
