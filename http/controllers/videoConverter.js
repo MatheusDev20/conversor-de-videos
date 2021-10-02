@@ -1,28 +1,29 @@
 
 import ffmpeg from 'fluent-ffmpeg'
-
-class VideoConverter {
+import VideoConverter from '../../Converters/videos';
+class VideoConverterController {
   async execute(req, res) {
+    const video = req.file;
+    const { to } = req.query;
+    
+    const converter = new VideoConverter(video);
     try {
-      console.log(req.query)
-      const { to } = req.query
-      console.log(to)
-      const command = ffmpeg(req.file.path)
-      command.withOutputFormat(to)
-        .on("end", () => {
-          console.log('Finished')
-        })
-        .on('error', (err) => {
-          console.log(err)
-        })
-        .saveToFile(__dirname + 'output.avi')
-      return res.send('ok')
+      const response = await converter.convert(to);
+
+      res.json({ data: response })
     }
     catch (err) {
-      res.json({ err: err })
+      let response = {
+        status: 500,
+        message: err.message,
+        path: ""
+      }
+      res.json({
+        data: response
+      })
     }
 
   }
 }
 
-export default VideoConverter
+export default VideoConverterController
