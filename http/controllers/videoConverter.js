@@ -18,6 +18,9 @@ class VideoConverterController {
     const converter = new VideoConverter(video);
     try {
       const response = await converter.convert(to);
+
+      const filename = await s3.saveFile(response.data.filename)
+
       let sendResponse = new BaseResponse(response.data, response.status, response.message)
 
       return res.json({ data: sendResponse })

@@ -10,6 +10,7 @@ class VideoConverter {
   }
 
   async convert(output) {
+    let convertedFileName = `converted-video-${Date.now()}.${output}`
     const promise = new Promise((resolve, reject) => {
       this.command.withOutputFormat(output)
         .on('error', (err) => {
@@ -18,13 +19,15 @@ class VideoConverter {
         })
         .on('end', () => {
           let res = {
-            "data": {},
+            "data": {
+              filename: convertedFileName
+            },
             "status": 200,
             "message": "Succesfully converted",
           }
           resolve(res)
         })
-        .save(path.resolve(__dirname, '..', '..', `outputs/${output}/converted-video.${output}`))
+        .save(path.resolve(__dirname, '..', '..', `outputs/${output}/${convertedFileName}`))
     })
     return promise
   }
