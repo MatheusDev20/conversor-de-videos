@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import multer from 'multer';
-import videosPath from '../../config/multer';
 import storage from '../../config/multer';
 import VideoConverterController from '../controllers/videoConverter';
 

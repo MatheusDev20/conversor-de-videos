@@ -4,6 +4,7 @@ import BaseResponse from '../Responses/BaseResponse'
 import Exception from '../Responses/Exception';
 import path from 'path';
 import S3Provider from '../../providers/S3';
+import { getStorageUrl } from '../../helpers/getStorageUrl'
 class VideoConverterController {
   async execute(req, res) {
     const video = req.file;
@@ -19,9 +20,14 @@ class VideoConverterController {
     try {
       const response = await converter.convert(to);
 
-      const filename = await s3.saveFile(response.data.filename)
+      await s3.saveFile(response.data.filename)
 
-      let sendResponse = new BaseResponse(response.data, response.status, response.message)
+      const fileUrl = getStorageUrl(response.data.filename)
+      let data = {
+        fileUrl,
+        filename: response.data.filename
+      }
+      let sendResponse = new BaseResponse(data, response.status, response.message)
 
       return res.json({ data: sendResponse })
     }
