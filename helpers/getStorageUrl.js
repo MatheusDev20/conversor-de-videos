@@ -6,6 +6,4 @@ const getStorageUrl = (filename) => {
     return `Host Video files here`
   }
 }
-
-
 export { getStorageUrl }
